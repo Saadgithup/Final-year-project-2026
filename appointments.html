@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h3 class="mb-4">Appointments</h3>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Ref</th><th>Patient</th><th>Doctor</th><th>Hospital</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+        {% for a in appointments %}
+        <tr>
+            <td>{{ a.booking_ref }}</td>
+            <td>{{ a.patient.first_name }} {{ a.patient.last_name }}</td>
+            <td>Dr. {{ a.doctor.first_name }} {{ a.doctor.last_name }}</td>
+            <td>{{ a.hospital.name }}</td>
+            <td>{{ a.appointment_date }}</td>
+            <td>{{ a.appointment_time.strftime('%H:%M') }}</td>
+            <td>{{ a.status }}</td>
+            <td>
+                <form method="post" action="{{ url_for('admin.delete_appointment', id=a.id) }}" class="d-inline" onsubmit="return confirm('Delete?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8">No appointments.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
